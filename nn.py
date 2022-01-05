@@ -21,7 +21,7 @@ class NeuralNetwork:
         self.output = sigmoid(np.add(np.dot(self.layer1, self.weights2), self.bias2))
         return self.output
 
-    def backprop(self):
+    def backpropagation(self):
         d_weights2 = np.dot(self.layer1.T, (2*(self.y - self.output)*sigmoid_derivative(self.output)))
         d_bias2 =  2*(self.y - self.output)*sigmoid_derivative(self.output)
         d_weights1 = np.dot(self.input.T, (np.dot(2*(self.y - self.output)*sigmoid_derivative(self.output), self.weights2.T)*sigmoid_derivative(self.layer1)))
@@ -35,16 +35,16 @@ class NeuralNetwork:
     def train(self, iterations):
         for i in range(iterations):
             self.output = self.feedforward()
-            self.backprop()
+            self.backpropagation()
             
             if i % 100 == 0 or i == iterations-1:
                 print("Iteration:", i)
-                print("Loss:", np.mean(np.square(y - nn.output)), "\n\n")
+                print("Loss:", np.mean(np.square(self.y - self.output)), "\n\n")
         
         print("\n##########################Output##########################\n")
-        print("Input:\n", x, "\n")
-        print("Actual output:\n", y, "\n")
-        print("Final Output:\n", nn.output, "\n")
+        print("Input:\n", self.input, "\n")
+        print("Actual output:\n", self.y, "\n")
+        print("Final Output:\n", self.output, "\n")
 
 if __name__ == "__main__":
     x = np.array(([0,0], [0, 1], [1, 0], [1, 1]), dtype=float)
