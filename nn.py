@@ -22,15 +22,15 @@ class NeuralNetwork:
         return self.output
 
     def backpropagation(self):
-        d_weights2 = np.dot(self.layer1.T, (2*(self.y - self.output)*sigmoid_derivative(self.output)))
-        d_bias2 =  2*(self.y - self.output)*sigmoid_derivative(self.output)
-        d_weights1 = np.dot(self.input.T, (np.dot(2*(self.y - self.output)*sigmoid_derivative(self.output), self.weights2.T)*sigmoid_derivative(self.layer1)))
-        d_bias1 = np.dot(2*(self.y - self.output)*sigmoid_derivative(self.output), self.weights2.T)*sigmoid_derivative(self.layer1)
+        d_weights2 = np.dot(self.layer1.T, (2*(self.output - self.y)*sigmoid_derivative(self.output)))
+        d_bias2 =  2*(self.output - self.y)*sigmoid_derivative(self.output)
+        d_weights1 = np.dot(self.input.T, (np.dot(2*(self.output - self.y)*sigmoid_derivative(self.output), self.weights2.T)*sigmoid_derivative(self.layer1)))
+        d_bias1 = np.dot(2*(self.output - self.y)*sigmoid_derivative(self.output), self.weights2.T)*sigmoid_derivative(self.layer1)
 
-        self.weights1 += d_weights1
-        self.weights2 += d_weights2
-        self.bias1 = np.add(self.bias1, d_bias1)
-        self.bias2 = np.add(self.bias2, d_bias2)
+        self.weights1 -= d_weights1
+        self.weights2 -= d_weights2
+        self.bias1 = np.subtract(self.bias1, d_bias1)
+        self.bias2 = np.subtract(self.bias2, d_bias2)
 
     def train(self, iterations):
         for i in range(iterations):
